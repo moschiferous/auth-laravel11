@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -25,6 +27,24 @@ class AuthController extends Controller
             return redirect('/');
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function loginView() {
+        return view('auth.login');
+    }
+
+    public function login(LoginRequest $request) {
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect('/');
+        }else{
+            return redirect()->back()->withErrors(['msg' => 'Username atau password SALAH!']);
         }
     }
 }
