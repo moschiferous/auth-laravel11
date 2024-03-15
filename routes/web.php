@@ -9,6 +9,8 @@ Route::controller(AuthController::class)->group(function (){
 
     Route::get('login', 'loginView')->name('login');
     Route::post('login', 'login')->name('auth.login');
+
+    Route::post('logout', 'logout')->name('logout');
 });
 Route::middleware(['auth'])->get('/', function () {
     return view('welcome');
